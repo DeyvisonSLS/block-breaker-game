@@ -8,6 +8,9 @@ public class Ball : MonoBehaviour
     private Vector3 _initialPos;
     private Vector2  _paddlePosDifference;
     private Rigidbody2D _rigidBody2D;
+    [SerializeField]
+    private AudioClip[] _ballAudioClips;
+    private AudioSource _ballAudioSource;
     private bool hasLaunched = false;
     [SerializeField]
     private float xPush;
@@ -17,11 +20,12 @@ public class Ball : MonoBehaviour
     void Start()
     {
         xPush = 0.0f;
-        yPush = 20.0f;
+        yPush = 10.0f;
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _initialPos = transform.position;
         _paddle = GameObject.FindWithTag("Paddle").GetComponent<Paddle>();
         _paddlePosDifference = transform.position - _paddle.transform.position; // axis.y = 2 - padle.axis.y = 1 = 1 (distance between one another)
+        _ballAudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -36,9 +40,13 @@ public class Ball : MonoBehaviour
             LaunchBallOnClick();
         }
     }
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    private void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        
+
+        if(hasLaunched)
+        {
+            _ballAudioSource.PlayOneShot(_ballAudioClips[Random.Range(0, _ballAudioClips.Length)]);
+        }
     }
 
     private void LaunchBallOnClick()
