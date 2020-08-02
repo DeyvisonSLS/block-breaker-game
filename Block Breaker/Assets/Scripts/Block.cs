@@ -12,12 +12,14 @@ public class Block : MonoBehaviour
     private SpriteRenderer _sprite;
     [SerializeField]
     private AudioClip _breakSound;
-
-    private void Start()
+    private GameManager _gameManager;
+    private void Awake()
     {
+        // _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
         _sprite = GetComponent<SpriteRenderer>();
+        _gameManager.IncreaseBlockCount();
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.name);
@@ -30,6 +32,7 @@ public class Block : MonoBehaviour
         if(_hitLife <= 0)
         {
             AudioSource.PlayClipAtPoint(_breakSound, Camera.main.transform.position);
+            _gameManager.DecreaseBlockCount();
             Destroy(this.gameObject);
         }
         else

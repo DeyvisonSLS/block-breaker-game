@@ -7,7 +7,7 @@ public class LoseCollider : MonoBehaviour
     // private static SceneLoader sceneLoader; 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        SceneLoader.LoadScene(2);
+        SceneLoader.LoadScene("Play Again");
         Destroy(other);
     }
 }
