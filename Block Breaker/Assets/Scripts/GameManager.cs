@@ -6,14 +6,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private int _blocksInScene = 0;
-    // Update is called once per frame
-    void Update()
-    {
-        if(_blocksInScene <= 0)
-        {
-            SceneLoader.LoadNextScene();
-        }
-    }
     public void IncreaseBlockCount()
     {
         _blocksInScene++;
@@ -21,5 +13,9 @@ public class GameManager : MonoBehaviour
     public void DecreaseBlockCount()
     {
         _blocksInScene--;
+        if(_blocksInScene <= 0)
+        {
+            SceneLoader.LoadNextScene();
+        }
     }
 }

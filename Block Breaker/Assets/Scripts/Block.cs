@@ -5,7 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     [SerializeField]
-    private float _hitLife = 3.0f;
+    private int _hitLife = 3;
     [SerializeField]
     private float _number;
     private int _value = 4;
@@ -13,17 +13,28 @@ public class Block : MonoBehaviour
     [SerializeField]
     private AudioClip _breakSound;
     private GameManager _gameManager;
-    private void Awake()
+    void Awake()
     {
         // _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _gameManager = FindObjectOfType<GameManager>();
         _sprite = GetComponent<SpriteRenderer>();
         _gameManager.IncreaseBlockCount();
     }
+    void Start()
+    {
+        ChangeColor();
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        DestroyBlock(collision);
+    }
+    private void DestroyBlock(Collision2D collision)
+    {
         Debug.Log(collision.gameObject.name);
-        wasHit();
+        if(collision.transform.tag == "Ball")
+        {
+            wasHit();
+        }
     }
     private void wasHit()
     {
@@ -37,11 +48,35 @@ public class Block : MonoBehaviour
         }
         else
         {
-            float newAlpha = _hitLife / 4;
-            _number = newAlpha;
-            // float test = Random.Range(0.0f, 1.0f);
-
-            _sprite.color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), 1.0f);
+            ChangeColor();
         }
+    }
+    private void ChangeColor()
+    {
+        Color32 newColor;
+        float newAlpha = _hitLife / 4;
+        _number = newAlpha;
+        
+
+        switch(_hitLife)
+        {
+            case 3:
+            newColor = new Color32(255, 255, 0, 255);
+            break;
+
+            case 2:
+            newColor = new Color32(255, 137, 0, 255);
+            break;
+
+            case 1:
+            newColor = new Color32(255, 0, 0, 255);
+            break;
+
+            default:
+            newColor = new Color32(255, 255, 0, 255);
+            break;
+        }
+
+        _sprite.color = (Color) newColor;
     }
 }
