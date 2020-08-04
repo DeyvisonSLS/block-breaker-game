@@ -9,11 +9,24 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float _gameSpeed = 1.0f;
     private float _myFixedDeltaTime = 0.02f;
+    [SerializeField]
+    private int _score = 0;
     #endregion
 
     #region PROPERTIES
     [SerializeField]
     public int BlocksInScene { get; private set; } = 0;
+    public int Score 
+    { 
+        get
+        {
+            return _score;
+        }
+        private set
+        {
+            _score = value;
+        }
+    }
     #endregion
 
     #region MONOBEHAVIOUR
@@ -25,6 +38,10 @@ public class GameManager : MonoBehaviour
     #endregion
     
     #region PUBLIC METHODS
+    public void AddPointsToScore(int points)
+    {
+        Score += points;
+    }
     #endregion
 
     #region PRIVATE METHODS

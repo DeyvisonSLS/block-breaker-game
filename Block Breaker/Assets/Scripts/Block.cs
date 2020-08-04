@@ -6,16 +6,45 @@ public class Block : MonoBehaviour
 {
     #region FIELDS
     //  The Sprite component in the gameobject.
-    [SerializeField]
     private SpriteRenderer _sprite;
     //  The AudioClip played [PlayClipAtPoint] when the block is destroyed .
     [SerializeField]
     private AudioClip _breakSound;
     //  GameManager in the scene.
     private GameManager _gameManager;
+    public enum BlockTypes {None, BlockType01, BlockTypes02};
     #endregion
 
     #region PROPERTIES
+    [SerializeField]
+    public BlockTypes BlockType = BlockTypes.None;
+    //  How much points it gives when it's destroyed
+    [SerializeField]
+    public int Points
+    { 
+        get
+        {
+            int points;
+
+            switch(BlockType)
+            {
+                case BlockTypes.BlockType01:
+                points = 10;
+                break;
+
+                case BlockTypes.BlockTypes02:
+                points = 20;
+                break;
+
+                default:
+                points = 5;
+                break;
+            }
+
+            return points;
+        }
+        private set{} 
+    }
     //  The values that represents the times the block can be hitted before break
     [SerializeField]
     public int HitLife {get; private set;}  = 3;
@@ -59,12 +88,17 @@ public class Block : MonoBehaviour
         {
             AudioSource.PlayClipAtPoint(_breakSound, Camera.main.transform.position);
             _gameManager.DecreaseBlockCount();
+            IncreaseScore();
             Destroy(this.gameObject);
         }
         else
         {
             ChangeColor();
         }
+    }
+    private void IncreaseScore()
+    {
+        _gameManager.AddPointsToScore(Points);
     }
     private void ChangeColor()
     {
