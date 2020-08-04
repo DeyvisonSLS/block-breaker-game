@@ -6,23 +6,33 @@ using UnityEngine.Events;
 
 public class Paddle : MonoBehaviour
 {
-    private Vector3 mousePosition;
-    private Vector2 screenBounds;
-    private float paddleWidth;
-    // [SerializeField]
-    // private float screenUnits = 16;
-    // [SerializeField]
-    // private GameObject testObj;
+    #region FIELDS
+    private Vector3 _mousePosition;
+    private Vector2 _screenBounds;
+    #endregion
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        paddleWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x;
+    #region PROPERTIES
+    public float PaddleExtents
+    { 
+        get
+        {
+            return transform.GetComponent<SpriteRenderer>().bounds.extents.x;;
+        }
     }
+    #endregion
 
-    // Update is called once per frame
+    #region MONOBEHAVIOUR
     void Update()
+    {
+        ConstrainPaddle();
+    }
+    #endregion
+    
+    #region PUBLIC METHODS
+    #endregion
+
+    #region PRIVATE METHODS
+    private void ConstrainPaddle()
     {
         // A position in the retangle width converted to world point
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -32,18 +42,18 @@ public class Paddle : MonoBehaviour
         // Here is important to use ViewportToWorldPoint for when the screen is resized we can't get too fast, in that way we make it responsive.
         // But, what is the math behind it?
         // Vector2 mousePosInUnits = Camera.main.ViewportToWorldPoint(Input.mousePosition / Screen.width);
+        Vector3 maxPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, transform.position.y, transform.position.z));
+        Vector3 minPos = Camera.main.ScreenToWorldPoint(new Vector3(0, transform.position.y, transform.position.z));
 
-
-        float maxPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, transform.position.y, transform.position.z)).x;
-        float minPos = Camera.main.ScreenToWorldPoint(new Vector3(0, transform.position.y, transform.position.z)).x;
-
-        mousePosition = transform.position; // Preserves the y and z position
-        mousePosition.x = Mathf.Clamp(mousePos.x, minPos + paddleWidth, maxPos - paddleWidth);
+        // Preserves the y and z position
+        _mousePosition = transform.position;
+        _mousePosition.x = Mathf.Clamp(mousePos.x, minPos.x + PaddleExtents, maxPos.x - PaddleExtents);
 
         // testObj.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1.0f));
         
         // mousePosition.x = Mathf.Clamp01(Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
         
-        transform.position = mousePosition;
+        transform.position = _mousePosition;
     }
+    #endregion
 }

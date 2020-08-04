@@ -4,35 +4,41 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    private int _blocksInScene = 0;
+    #region FIELDS
     [Range(0.0f, 10.0f)]
     [SerializeField]
     private float _gameSpeed = 1.0f;
-    private float fixedDeltaTime;
-    void Awake()
-    {
-        this.fixedDeltaTime = 0.02f;
-        Debug.Log("fixedDeltaTime on awake is: " + this.fixedDeltaTime);
-    }
+    private float _myFixedDeltaTime = 0.02f;
+    #endregion
+
+    #region PROPERTIES
+    [SerializeField]
+    public int BlocksInScene { get; private set; } = 0;
+    #endregion
+
+    #region MONOBEHAVIOUR
     void Update()
     {
-        // Debug.Log("deltaTime: " + Time.deltaTime);
-        // Debug.Log("fixedDeltaTime: " + Time.fixedDeltaTime);
         Time.timeScale = _gameSpeed;
-        // Time.maximumDeltaTime =  _gameSpeed;
-        Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
+        Time.fixedDeltaTime = _myFixedDeltaTime * Time.timeScale;
     }
+    #endregion
+    
+    #region PUBLIC METHODS
+    #endregion
+
+    #region PRIVATE METHODS
     public void IncreaseBlockCount()
     {
-        _blocksInScene++;
+        BlocksInScene++;
     }
     public void DecreaseBlockCount()
     {
-        _blocksInScene--;
-        if(_blocksInScene <= 0)
+        BlocksInScene--;
+        if(BlocksInScene <= 0)
         {
             SceneLoader.LoadNextScene();
         }
     }
+    #endregion
 }

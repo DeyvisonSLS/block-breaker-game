@@ -4,38 +4,46 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private Paddle _paddle;
-    private Vector3 _initialPos;
-    private Vector2  _paddlePosDifference;
-    private Rigidbody2D _rigidBody2D;
-    [SerializeField]
-    private AudioClip[] _ballAudioClips;
-    private AudioSource _ballAudioSource;
-    private bool hasLaunched = false;
+    #region FIELDS
+    //  Force values that the ball is launched
     [SerializeField]
     private float xPush;
     [SerializeField]
     private float yPush;
-    // Start is called before the first frame update
+    // The paddle about the ball
+    private Paddle _paddle;
+    //  Difference between the center of the paddle an its top, where the ball is.
+    private Vector2  _paddlePosDifference;
+    private Rigidbody2D _ballRigidBody2D;
+    //  Sounds of click when the ball collides. They are ramdomly selected.
+    [SerializeField]
+    private AudioClip[] _ballAudioClips;
+    //  The game audio source placed on the main camera
+    private AudioSource _ballAudioSource;
+    #endregion
+
+    #region PROPERTIES
+    //  After all, it was already launched or not?
+    public bool HasLaunched { get; private set; } = false;
+    #endregion
+
+    #region MONOBEHAVIOUR
     void Start()
     {
         xPush = 0.0f;
         yPush = 10.0f;
-        _rigidBody2D = GetComponent<Rigidbody2D>();
-        _initialPos = transform.position;
+        _ballRigidBody2D = GetComponent<Rigidbody2D>();
         _paddle = GameObject.FindWithTag("Paddle").GetComponent<Paddle>();
-        _paddlePosDifference = transform.position - _paddle.transform.position; // axis.y = 2 - padle.axis.y = 1 = 1 (distance between one another)
+        _paddlePosDifference = transform.position - _paddle.transform.position;
         _ballAudioSource = GetComponent<AudioSource>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if(!hasLaunched)
+        if(!HasLaunched)
         {
             StickBallToPaddle();
         }
-        if(_rigidBody2D.velocity == Vector2.zero)
+        if(_ballRigidBody2D.velocity == Vector2.zero)
         {
             LaunchBallOnClick();
         }
@@ -43,24 +51,30 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collisionInfo)
     {
 
-        if(hasLaunched)
+        if(HasLaunched)
         {
             _ballAudioSource.PlayOneShot(_ballAudioClips[Random.Range(0, _ballAudioClips.Length)]);
         }
     }
+    #endregion
 
+    #region PUBLIC METHODS
+    #endregion
+
+    #region PRIVATE METHODS
     private void LaunchBallOnClick()
     {
         if(Input.GetMouseButtonDown(0))
         {
-            hasLaunched = true;
-            _rigidBody2D.velocity = new Vector2(xPush, yPush);
+            HasLaunched = true;
+            _ballRigidBody2D.velocity = new Vector2(xPush, yPush);
         }
     }
-
     private void StickBallToPaddle()
     {
         Vector2 paddlePos = new Vector2(_paddle.transform.position.x, _paddle.transform.position.y);
-        transform.position = paddlePos + _paddlePosDifference;  
+        //  Assigns the paddle position plus .574 (difference it takes from pivot in the paddle center to its top) in axis.y.
+        transform.position = paddlePos + _paddlePosDifference;
     }
+    #endregion
 }

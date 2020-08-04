@@ -5,13 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    // public static SceneLoader sceneLoader;
-
+    #region PUBLIC METHODS
     public static void LoadNextScene()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextScene = currentSceneIndex + 1;
-
         SceneManager.LoadScene(nextScene);
     }
     public static void LoadScene(int sceneIndex)
@@ -34,4 +32,5 @@ public class SceneLoader : MonoBehaviour
     {
         Application.Quit();
     }
+    #endregion
 }

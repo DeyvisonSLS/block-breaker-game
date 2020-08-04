@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    #region FIELDS
+    //  The Sprite component in the gameobject.
     [SerializeField]
-    private int _hitLife = 3;
-    [SerializeField]
-    private float _number;
-    private int _value = 4;
     private SpriteRenderer _sprite;
+    //  The AudioClip played [PlayClipAtPoint] when the block is destroyed .
     [SerializeField]
     private AudioClip _breakSound;
+    //  GameManager in the scene.
     private GameManager _gameManager;
-    void Awake()
+    #endregion
+
+    #region PROPERTIES
+    //  The values that represents the times the block can be hitted before break
+    [SerializeField]
+    public int HitLife {get; private set;}  = 3;
+    #endregion
+
+    #region MONOBEHAVIOUR
+    private void Awake()
     {
         // _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _gameManager = FindObjectOfType<GameManager>();
         _sprite = GetComponent<SpriteRenderer>();
         _gameManager.IncreaseBlockCount();
     }
-    void Start()
+    private void Start()
     {
         ChangeColor();
     }
@@ -33,14 +42,20 @@ public class Block : MonoBehaviour
         Debug.Log(collision.gameObject.name);
         if(collision.transform.tag == "Ball")
         {
-            wasHit();
+            WasHit();
         }
     }
-    private void wasHit()
+    #endregion
+
+    #region PUBLIC METHODS
+    #endregion
+
+    #region PRIVATE METHODS
+    private void WasHit()
     {
-        _hitLife--;
+        HitLife--;
         
-        if(_hitLife <= 0)
+        if(HitLife <= 0)
         {
             AudioSource.PlayClipAtPoint(_breakSound, Camera.main.transform.position);
             _gameManager.DecreaseBlockCount();
@@ -54,11 +69,8 @@ public class Block : MonoBehaviour
     private void ChangeColor()
     {
         Color32 newColor;
-        float newAlpha = _hitLife / 4;
-        _number = newAlpha;
         
-
-        switch(_hitLife)
+        switch(HitLife)
         {
             case 3:
             newColor = new Color32(255, 255, 0, 255);
@@ -79,4 +91,5 @@ public class Block : MonoBehaviour
 
         _sprite.color = (Color) newColor;
     }
+    #endregion
 }

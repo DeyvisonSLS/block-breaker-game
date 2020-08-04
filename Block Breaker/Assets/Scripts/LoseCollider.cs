@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class LoseCollider : MonoBehaviour
 {
-    // private static SceneLoader sceneLoader; 
+    #region MONOBEHAVIOUR
     private void OnTriggerEnter2D(Collider2D other)
     {
         SceneLoader.LoadScene("Play Again");
         Destroy(other);
     }
+    #endregion
 }
