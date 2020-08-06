@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private float _myFixedDeltaTime = 0.02f;
     [SerializeField]
     private int _score = 0;
+    private UIManager _uiManager;
     #endregion
 
     #region PROPERTIES
@@ -30,6 +31,10 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region MONOBEHAVIOUR
+    void Start()
+    {
+        _uiManager = FindObjectOfType<UIManager>();
+    }
     void Update()
     {
         Time.timeScale = _gameSpeed;
@@ -41,6 +46,7 @@ public class GameManager : MonoBehaviour
     public void AddPointsToScore(int points)
     {
         Score += points;
+        _uiManager.UpdateScore(Score);
     }
     #endregion
 
