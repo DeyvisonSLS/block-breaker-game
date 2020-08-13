@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    private GameManager _gameManager;
+
+    #region MONOBEHAVIOR
+    void Start()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+    }
+    #endregion
+
     #region PUBLIC METHODS
     public static void LoadNextScene()
     {
@@ -27,6 +36,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadFirstLevel()
     {
         SceneManager.LoadScene(1);
+        _gameManager.StartNewGame();
     }
     public void QuitGame()
     {

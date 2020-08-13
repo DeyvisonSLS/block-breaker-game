@@ -56,11 +56,11 @@ public class Block : MonoBehaviour
         // _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _gameManager = FindObjectOfType<GameManager>();
         _sprite = GetComponent<SpriteRenderer>();
-        _gameManager.IncreaseBlockCount();
     }
     private void Start()
     {
         ChangeColor();
+        _gameManager.IncreaseBlockCount();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

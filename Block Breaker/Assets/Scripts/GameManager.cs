@@ -11,12 +11,23 @@ public class GameManager : MonoBehaviour
     private float _myFixedDeltaTime = 0.02f;
     [SerializeField]
     private int _score = 0;
+    [SerializeField]
+    private int _blocksInScene = 0;
     private UIManager _uiManager;
     #endregion
 
     #region PROPERTIES
-    [SerializeField]
-    public int BlocksInScene { get; private set; } = 0;
+    public int BlocksInScene 
+    {
+        get
+        {
+            return _blocksInScene;
+        }
+        private set
+        {
+            _blocksInScene = value;
+        } 
+    }
     public int Score 
     { 
         get
@@ -31,9 +42,24 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region MONOBEHAVIOUR
+    void Awake()
+    {
+        int gameManagerCount = FindObjectsOfType<GameManager>().Length;
+        if(gameManagerCount > 1)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        _uiManager = FindObjectOfType<UIManager>();
+    }
     void Start()
     {
-        _uiManager = FindObjectOfType<UIManager>();
+        
+        Debug.Log("Game manager on start");
     }
     void Update()
     {
@@ -46,7 +72,29 @@ public class GameManager : MonoBehaviour
     public void AddPointsToScore(int points)
     {
         Score += points;
+        Debug.Log("Ponto adicionado!");
+        // if(_uiManager != null)
         _uiManager.UpdateScore(Score);
+    }
+    public void StartNewGame()
+    {
+        ResetGameStats();
+        _uiManager.HUDView(true);
+    }
+    public void ResetGameStats()
+    {
+        ResetScore();
+        ResetBlockCount();
+        Debug.Log("Reset game stats.");
+    }
+    public void ResetScore()
+    {
+        Score = 0;
+        _uiManager.UpdateScore(0);
+    }
+    public void ResetBlockCount()
+    {
+        BlocksInScene = 0;
     }
     #endregion
 
@@ -54,6 +102,7 @@ public class GameManager : MonoBehaviour
     public void IncreaseBlockCount()
     {
         BlocksInScene++;
+        Debug.Log("Blocks added.");
     }
     public void DecreaseBlockCount()
     {
