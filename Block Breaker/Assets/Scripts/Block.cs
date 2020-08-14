@@ -12,6 +12,8 @@ public class Block : MonoBehaviour
     private AudioClip _breakSound;
     //  GameManager in the scene.
     private GameManager _gameManager;
+    [SerializeField]
+    private GameObject _sparklePrefab;
     public enum BlockTypes {None, BlockType01, BlockTypes02};
     #endregion
 
@@ -89,6 +91,7 @@ public class Block : MonoBehaviour
             AudioSource.PlayClipAtPoint(_breakSound, Camera.main.transform.position);
             _gameManager.DecreaseBlockCount();
             IncreaseScore();
+            PlaySparkle();
             Destroy(this.gameObject);
         }
         else
@@ -124,6 +127,11 @@ public class Block : MonoBehaviour
         }
 
         _sprite.color = (Color) newColor;
+    }
+    private void PlaySparkle()
+    {
+        GameObject sparkle = Instantiate(_sparklePrefab, transform.position, transform.rotation);
+        Destroy(sparkle, 1.0f);
     }
     #endregion
 }

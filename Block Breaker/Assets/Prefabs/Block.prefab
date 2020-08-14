@@ -122,6 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f33593e31af13a479ba7af17d8539fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprite: {fileID: 0}
   _breakSound: {fileID: 8300000, guid: 9217657e7a10caf4b8ab6c820b6dd810, type: 3}
+  _sparklePrefab: {fileID: 100000, guid: 7d846c02296ef4dc4abff04ce3e5262c, type: 3}
   BlockType: 0
