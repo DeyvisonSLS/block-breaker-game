@@ -15,10 +15,6 @@ public class LoseCollider : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(_gameManager != null)
-        {
-            _gameManager.Destroy();
-        }
         SceneLoader.LoadScene("Play Again");
         Destroy(other);
     }

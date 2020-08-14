@@ -31,14 +31,14 @@ public class SceneLoader : MonoBehaviour
     }
     public void LoadStartScene()
     {
-        SceneManager.LoadScene(0);
-    }
-    public void LoadFirstLevel()
-    {
         if(_gameManager != null)
         {
             _gameManager.Destroy();
         }
+        SceneManager.LoadScene(0);
+    }
+    public void LoadFirstLevel()
+    {
         SceneManager.LoadScene(1);
     }
     public void QuitGame()
