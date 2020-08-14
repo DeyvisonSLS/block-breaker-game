@@ -35,8 +35,11 @@ public class SceneLoader : MonoBehaviour
     }
     public void LoadFirstLevel()
     {
+        if(_gameManager != null)
+        {
+            _gameManager.Destroy();
+        }
         SceneManager.LoadScene(1);
-        _gameManager.StartNewGame();
     }
     public void QuitGame()
     {

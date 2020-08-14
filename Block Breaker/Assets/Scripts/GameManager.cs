@@ -76,25 +76,9 @@ public class GameManager : MonoBehaviour
         // if(_uiManager != null)
         _uiManager.UpdateScore(Score);
     }
-    public void StartNewGame()
+    public void Destroy()
     {
-        ResetGameStats();
-        _uiManager.HUDView(true);
-    }
-    public void ResetGameStats()
-    {
-        ResetScore();
-        ResetBlockCount();
-        Debug.Log("Reset game stats.");
-    }
-    public void ResetScore()
-    {
-        Score = 0;
-        _uiManager.UpdateScore(0);
-    }
-    public void ResetBlockCount()
-    {
-        BlocksInScene = 0;
+        Destroy(gameObject);
     }
     #endregion
 
