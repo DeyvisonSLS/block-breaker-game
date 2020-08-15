@@ -56,11 +56,6 @@ public class GameManager : MonoBehaviour
         }
         _uiManager = FindObjectOfType<UIManager>();
     }
-    void Start()
-    {
-        
-        Debug.Log("Game manager on start");
-    }
     void Update()
     {
         Time.timeScale = _gameSpeed;
@@ -86,7 +81,6 @@ public class GameManager : MonoBehaviour
     public void IncreaseBlockCount()
     {
         BlocksInScene++;
-        Debug.Log("Blocks added.");
     }
     public void DecreaseBlockCount()
     {

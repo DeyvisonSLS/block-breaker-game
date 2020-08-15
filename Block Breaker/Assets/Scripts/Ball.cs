@@ -17,7 +17,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D _ballRigidBody2D;
     //  Sounds of click when the ball collides. They are ramdomly selected.
     [SerializeField]
-    private AudioClip[] _ballAudioClips;
+    private AudioClip[] _ballAudioClips = null;
     //  The game audio source placed on the main camera
     private AudioSource _ballAudioSource;
     #endregion

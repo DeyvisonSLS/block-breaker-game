@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class Block : MonoBehaviour
 {
     #region FIELDS
@@ -9,12 +10,12 @@ public class Block : MonoBehaviour
     private SpriteRenderer _sprite;
     //  The AudioClip played [PlayClipAtPoint] when the block is destroyed .
     [SerializeField]
-    private AudioClip _breakSound;
+    private AudioClip _breakSound = null;
     //  GameManager in the scene.
     private GameManager _gameManager;
     [SerializeField]
-    private GameObject _sparklePrefab;
-    public enum BlockTypes {None, BlockType01, BlockTypes02};
+    private GameObject _sparklePrefab = null;
+    public enum BlockTypes {None, BlockType01, BlockTypes02, Unbreakable};
     #endregion
 
     #region PROPERTIES
@@ -62,15 +63,21 @@ public class Block : MonoBehaviour
     private void Start()
     {
         ChangeColor();
-        _gameManager.IncreaseBlockCount();
+        if(BlockType != BlockTypes.Unbreakable)
+        {
+            _gameManager.IncreaseBlockCount();
+        }
+    }
+    private void OnValidate()
+    {
+        ChangeColor();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        DestroyBlock(collision);
+        BlockCollision(collision);
     }
-    private void DestroyBlock(Collision2D collision)
+    private void BlockCollision(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
         if(collision.transform.tag == "Ball")
         {
             WasHit();
@@ -84,19 +91,22 @@ public class Block : MonoBehaviour
     #region PRIVATE METHODS
     private void WasHit()
     {
-        HitLife--;
-        
-        if(HitLife <= 0)
+        if(BlockType != BlockTypes.Unbreakable)
         {
-            AudioSource.PlayClipAtPoint(_breakSound, Camera.main.transform.position);
-            _gameManager.DecreaseBlockCount();
-            IncreaseScore();
-            PlaySparkle();
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            ChangeColor();
+            HitLife--;
+
+            if(HitLife <= 0)
+            {
+                AudioSource.PlayClipAtPoint(_breakSound, Camera.main.transform.position);
+                _gameManager.DecreaseBlockCount();
+                IncreaseScore();
+                PlaySparkle();
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                ChangeColor();
+            }
         }
     }
     private void IncreaseScore()
@@ -107,25 +117,33 @@ public class Block : MonoBehaviour
     {
         Color32 newColor;
         
-        switch(HitLife)
+        if(BlockType != BlockTypes.Unbreakable)
         {
-            case 3:
-            newColor = new Color32(255, 255, 0, 255);
-            break;
+            switch(HitLife)
+            {
+                case 3:
+                newColor = new Color32(255, 255, 0, 255);
+                break;
 
-            case 2:
-            newColor = new Color32(255, 137, 0, 255);
-            break;
+                case 2:
+                newColor = new Color32(255, 137, 0, 255);
+                break;
 
-            case 1:
-            newColor = new Color32(255, 0, 0, 255);
-            break;
+                case 1:
+                newColor = new Color32(255, 0, 0, 255);
+                break;
 
-            default:
-            newColor = new Color32(255, 255, 0, 255);
-            break;
+                default:
+                newColor = new Color32(255, 255, 0, 255);
+                break;
+            }
+        }
+        else
+        {
+            newColor = Color.grey;
         }
 
+        if(_sprite != null)
         _sprite.color = (Color) newColor;
     }
     private void PlaySparkle()

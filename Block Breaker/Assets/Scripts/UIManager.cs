@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     #region FIELDS
     [SerializeField]
-    private TextMeshProUGUI _score;
+    private TextMeshProUGUI _score = null;
     #endregion
 
     #region MONOBEHAVIOUR
