@@ -7,7 +7,9 @@ public class Block : MonoBehaviour
 {
     #region FIELDS
     //  The Sprite component in the gameobject.
-    private SpriteRenderer _sprite;
+    private SpriteRenderer _spriteRenderer;
+    [SerializeField]
+    private Sprite[] _blockSprites;
     //  The AudioClip played [PlayClipAtPoint] when the block is destroyed .
     [SerializeField]
     private AudioClip _breakSound = null;
@@ -15,32 +17,28 @@ public class Block : MonoBehaviour
     private GameManager _gameManager;
     [SerializeField]
     private GameObject _sparklePrefab = null;
-    public enum BlockTypes {None, BlockType01, BlockTypes02, Unbreakable};
+    public enum BlockTypes {Sensible, Normal, Unbreakable};
     #endregion
 
     #region PROPERTIES
     [SerializeField]
-    public BlockTypes BlockType = BlockTypes.None;
+    public BlockTypes BlockType;
     //  How much points it gives when it's destroyed
     [SerializeField]
     public int Points
     { 
         get
         {
-            int points;
+            int points = 0;
 
             switch(BlockType)
             {
-                case BlockTypes.BlockType01:
+                case BlockTypes.Sensible:
                 points = 10;
                 break;
 
-                case BlockTypes.BlockTypes02:
+                case BlockTypes.Normal:
                 points = 20;
-                break;
-
-                default:
-                points = 5;
                 break;
             }
 
@@ -49,28 +47,41 @@ public class Block : MonoBehaviour
         private set{} 
     }
     //  The values that represents the times the block can be hitted before break
+
     [SerializeField]
-    public int HitLife {get; private set;}  = 3;
+    private int _hitLife = 0;
+    public int HitLife
+    {
+        get
+        {
+            return _hitLife;
+        } 
+        private set
+        {
+            _hitLife = value;
+        }
+    }
     #endregion
 
     #region MONOBEHAVIOUR
     private void Awake()
     {
-        // _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _gameManager = FindObjectOfType<GameManager>();
-        _sprite = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
     private void Start()
     {
-        ChangeColor();
         if(BlockType != BlockTypes.Unbreakable)
         {
             _gameManager.IncreaseBlockCount();
         }
+
+        SetLife();
     }
     private void OnValidate()
     {
-        ChangeColor();
+        SetLife();
+        ChangeBlockState();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -78,6 +89,7 @@ public class Block : MonoBehaviour
     }
     private void BlockCollision(Collision2D collision)
     {
+        Debug.Log("Hit");
         if(collision.transform.tag == "Ball")
         {
             WasHit();
@@ -89,6 +101,19 @@ public class Block : MonoBehaviour
     #endregion
 
     #region PRIVATE METHODS
+    private void SetLife()
+    {
+        switch(BlockType)
+        {
+            case BlockTypes.Sensible:
+            _hitLife = 1;
+            break;
+
+            case BlockTypes.Normal:
+            _hitLife = 3;
+            break;
+        }
+    }
     private void WasHit()
     {
         if(BlockType != BlockTypes.Unbreakable)
@@ -105,15 +130,19 @@ public class Block : MonoBehaviour
             }
             else
             {
-                ChangeColor();
+                ChangeBlockState();
             }
+        }
+        else
+        {
+            ChangeBlockState();
         }
     }
     private void IncreaseScore()
     {
         _gameManager.AddPointsToScore(Points);
     }
-    private void ChangeColor()
+    private void ChangeBlockState()
     {
         Color32 newColor;
         
@@ -127,10 +156,14 @@ public class Block : MonoBehaviour
 
                 case 2:
                 newColor = new Color32(255, 137, 0, 255);
+                if(_spriteRenderer != null)
+                _spriteRenderer.sprite = _blockSprites[1];
                 break;
 
                 case 1:
                 newColor = new Color32(255, 0, 0, 255);
+                if(_spriteRenderer != null)
+                _spriteRenderer.sprite = _blockSprites[2];
                 break;
 
                 default:
@@ -143,8 +176,8 @@ public class Block : MonoBehaviour
             newColor = Color.grey;
         }
 
-        if(_sprite != null)
-        _sprite.color = (Color) newColor;
+        if(_spriteRenderer != null)
+        _spriteRenderer.color = (Color) newColor;
     }
     private void PlaySparkle()
     {
