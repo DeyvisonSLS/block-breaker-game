@@ -31,7 +31,17 @@ public class Paddle : MonoBehaviour
     }
     void FixedUpdate()
     {
-        ConstrainPaddle();
+        if(!_gameManager.IsAutoPlayOn())
+        {
+            ConstrainPaddle();
+        }
+    }
+    void LateUpdate()
+    {
+        if(_gameManager.IsAutoPlayOn())
+        {
+            ConstrainPaddle();
+        }
     }
     #endregion
     

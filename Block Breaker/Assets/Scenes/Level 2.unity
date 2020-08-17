@@ -4618,7 +4618,12 @@ PrefabInstance:
     - target: {fileID: 3116935903770146864, guid: 2a9e25740c8c7874c8c2ee557862d656,
         type: 3}
       propertyPath: _autoPlay
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116935903770146864, guid: 2a9e25740c8c7874c8c2ee557862d656,
+        type: 3}
+      propertyPath: _gameSpeed
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3116935903770146867, guid: 2a9e25740c8c7874c8c2ee557862d656,
         type: 3}
