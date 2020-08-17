@@ -232,11 +232,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f6f4561b740ab4795504ee173e02ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xPush: 0
+  yPush: 0
   _ballAudioClips:
   - {fileID: 8300000, guid: cff6fd90903bc9942be6a615bc38c0c8, type: 3}
   - {fileID: 8300000, guid: 61ddd21d82151c04b86a9c3aa2538928, type: 3}
-  xPush: 0
-  yPush: 0
+  _randomFactor: 0.05
 --- !u!82 &920072974
 AudioSource:
   m_ObjectHideFlags: 0

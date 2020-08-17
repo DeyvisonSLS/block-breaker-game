@@ -9,6 +9,8 @@ public class Paddle : MonoBehaviour
     #region FIELDS
     private Vector3 _mousePosition;
     private Vector2 _screenBounds;
+    private GameManager _gameManager;
+    private Ball _ball;
     #endregion
 
     #region PROPERTIES
@@ -22,7 +24,12 @@ public class Paddle : MonoBehaviour
     #endregion
 
     #region MONOBEHAVIOUR
-    void Update()
+    void Awake()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+        _ball = FindObjectOfType<Ball>();
+    }
+    void FixedUpdate()
     {
         ConstrainPaddle();
     }
@@ -35,7 +42,7 @@ public class Paddle : MonoBehaviour
     private void ConstrainPaddle()
     {
         // A position in the retangle width converted to world point
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         // Normalized coordinate position (0,0 (bottom-left) até 1,1 (top-right) = Total screen (widht or height) divided by the coordinate 
         // inside screen where the mouse is over) to World position (how is the maths to find world pos?)
@@ -47,13 +54,24 @@ public class Paddle : MonoBehaviour
 
         // Preserves the y and z position
         _mousePosition = transform.position;
-        _mousePosition.x = Mathf.Clamp(mousePos.x, minPos.x + PaddleExtents, maxPos.x - PaddleExtents);
+        _mousePosition.x = Mathf.Clamp(GetXPos(), minPos.x + PaddleExtents, maxPos.x - PaddleExtents);
 
         // testObj.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.1f, 0.1f, 1.0f));
         
         // mousePosition.x = Mathf.Clamp01(Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
         
         transform.position = _mousePosition;
+    }
+    private float GetXPos()
+    {
+        if(_gameManager.IsAutoPlayOn())
+        {
+            return _ball.transform.position.x;
+        }
+        else
+        {
+            return Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+        }
     }
     #endregion
 }

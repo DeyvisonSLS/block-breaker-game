@@ -73,6 +73,7 @@ public class Block : MonoBehaviour
     {
         if(BlockType != BlockTypes.Unbreakable)
         {
+            Debug.Log("Block added: " + name);
             _gameManager.IncreaseBlockCount();
         }
 

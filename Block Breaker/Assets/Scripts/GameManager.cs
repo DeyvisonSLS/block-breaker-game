@@ -11,8 +11,9 @@ public class GameManager : MonoBehaviour
     private float _myFixedDeltaTime = 0.02f;
     [SerializeField]
     private int _score = 0;
-    [SerializeField]
     private int _blocksInScene = 0;
+    [SerializeField]
+    private bool _autoPlay = false;
     private UIManager _uiManager;
     #endregion
 
@@ -74,6 +75,10 @@ public class GameManager : MonoBehaviour
     public void Destroy()
     {
         Destroy(gameObject);
+    }
+    public bool IsAutoPlayOn()
+    {
+        return _autoPlay;
     }
     #endregion
 

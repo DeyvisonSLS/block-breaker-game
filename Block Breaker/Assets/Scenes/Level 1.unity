@@ -716,6 +716,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3116935903770146864, guid: 2a9e25740c8c7874c8c2ee557862d656,
+        type: 3}
+      propertyPath: _blocksInScene
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116935903770146864, guid: 2a9e25740c8c7874c8c2ee557862d656,
+        type: 3}
+      propertyPath: _autoPlay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3116935903770146867, guid: 2a9e25740c8c7874c8c2ee557862d656,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3259,16 +3269,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5233567017329707481, guid: 0006098354378c441b750b0c87e36aa6,
-        type: 3}
-      propertyPath: m_Interpolate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5233567017329707482, guid: 0006098354378c441b750b0c87e36aa6,
-        type: 3}
-      propertyPath: _randomFactor
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5233567017329707485, guid: 0006098354378c441b750b0c87e36aa6,
         type: 3}
       propertyPath: m_Name
