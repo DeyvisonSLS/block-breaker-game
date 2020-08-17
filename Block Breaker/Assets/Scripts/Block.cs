@@ -17,7 +17,7 @@ public class Block : MonoBehaviour
     private GameManager _gameManager;
     [SerializeField]
     private GameObject _sparklePrefab = null;
-    public enum BlockTypes {Sensible, Normal, Unbreakable};
+    public enum BlockTypes {Sensible, Semi, Normal, Unbreakable};
     #endregion
 
     #region PROPERTIES
@@ -109,6 +109,10 @@ public class Block : MonoBehaviour
             _hitLife = 1;
             break;
 
+            case BlockTypes.Semi:
+            _hitLife = 2;
+            break;
+
             case BlockTypes.Normal:
             _hitLife = 3;
             break;
@@ -152,6 +156,8 @@ public class Block : MonoBehaviour
             {
                 case 3:
                 newColor = new Color32(255, 255, 0, 255);
+                if(_spriteRenderer != null)
+                _spriteRenderer.sprite = _blockSprites[0];
                 break;
 
                 case 2:

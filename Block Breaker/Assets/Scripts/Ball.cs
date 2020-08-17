@@ -20,6 +20,8 @@ public class Ball : MonoBehaviour
     private AudioClip[] _ballAudioClips = null;
     //  The game audio source placed on the main camera
     private AudioSource _ballAudioSource;
+    [SerializeField]
+    private float _randomFactor = 0.05f;
     #endregion
 
     #region PROPERTIES
@@ -50,10 +52,11 @@ public class Ball : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-
+        Vector2 velocityTweak = new Vector2(Random.Range(0, _randomFactor), Random.Range(0, _randomFactor));
         if(HasLaunched)
         {
             _ballAudioSource.PlayOneShot(_ballAudioClips[Random.Range(0, _ballAudioClips.Length)]);
+            _ballRigidBody2D.velocity += velocityTweak;
         }
     }
     #endregion
