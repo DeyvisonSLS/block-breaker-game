@@ -33,14 +33,14 @@ public class Paddle : MonoBehaviour
     {
         if(!_gameManager.IsAutoPlayOn())
         {
-            ConstrainPaddle();
+            ControlPaddle();
         }
     }
     void LateUpdate()
     {
         if(_gameManager.IsAutoPlayOn())
         {
-            ConstrainPaddle();
+            ControlPaddle();
         }
     }
     #endregion
@@ -49,7 +49,7 @@ public class Paddle : MonoBehaviour
     #endregion
 
     #region PRIVATE METHODS
-    private void ConstrainPaddle()
+    private void ControlPaddle()
     {
         // A position in the retangle width converted to world point
         // Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

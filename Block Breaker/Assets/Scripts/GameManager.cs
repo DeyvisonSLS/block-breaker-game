@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     #region FIELDS
-    [Range(0.0f, 10.0f)]
+    [Range(0.0f, 5.0f)]
     [SerializeField]
     private float _gameSpeed = 1.0f;
     private float _myFixedDeltaTime = 0.02f;
